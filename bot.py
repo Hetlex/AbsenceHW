@@ -17,7 +17,7 @@ async def on_ready():
     print(f"{bot.user.name} connected.")
 
 async def setup():
-    await bot.load_extension("cogs.away")  # теперь обязательно await
+    await bot.load_extension("cogs.away") 
     await bot.start(TOKEN)
 
 asyncio.run(setup())
