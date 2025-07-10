@@ -1,22 +1,48 @@
-from discord import ui, Interaction, ButtonStyle
+import discord
+from discord import ui, Interaction, SelectOption
 from utils.storage import load_data
 from .away_modal import AwayModal
 
+class LanguageSelect(ui.Select):
+    def __init__(self):
+        options = [
+            SelectOption(label="English", value="en"),
+            SelectOption(label="Русский", value="ru"),
+        ]
+        super().__init__(placeholder="Select your language...", min_values=1, max_values=1, options=options)
+
+    async def callback(self, interaction: Interaction):
+        lang = self.values[0]
+        # Заменяем селект на следующий — выбор типа отсутствия с нужным языком
+        view = AbsenceTypeView(lang)
+        await interaction.response.edit_message(content="Choose absence type:" if lang == "en" else "Выберите тип отсутствия:", view=view)
+
+class AbsenceTypeSelect(ui.Select):
+    def __init__(self, lang):
+        self.lang = lang
+        options_en = [
+            SelectOption(label="Skipping a week", description="Won't reach weekly limit"),
+            SelectOption(label="Skipping 5v5 (1 day)"),
+            SelectOption(label="Skipping 5v5 (2 day`s)"),
+        ]
+        options_ru = [
+            SelectOption(label="Пропускаю неделю", description="Не смогу набить недельный лимит"),
+            SelectOption(label="Пропускаю 5на5 (1 день)"),
+            SelectOption(label="Пропускаю 5на5 (2 дня)"),
+        ]
+        options = options_en if lang == "en" else options_ru
+        super().__init__(placeholder="Select absence type..." if lang == "en" else "Выберите тип отсутствия...", min_values=1, max_values=1, options=options)
+
+    async def callback(self, interaction: Interaction):
+        absence_type = self.values[0]
+        await interaction.response.send_modal(AwayModal(absence_type=absence_type, lang=self.lang))
+
+class AbsenceTypeView(ui.View):
+    def __init__(self, lang):
+        super().__init__(timeout=60)
+        self.add_item(AbsenceTypeSelect(lang))
+
 class MainMenu(ui.View):
-    def __init__(self, timeout=60):
-        super().__init__(timeout=timeout)
-
-    @ui.button(label="Отметить отсутствие", style=ButtonStyle.primary)
-    async def mark_away(self, button: ui.Button, interaction: Interaction):
-        await interaction.response.send_modal(AwayModal())
-
-    @ui.button(label="Список отсутствующих", style=ButtonStyle.secondary)
-    async def show_awaylist(self, button: ui.Button, interaction: Interaction):
-        data = load_data()
-        if not data:
-            await interaction.response.send_message("Список отсутствующих пуст.", ephemeral=True)
-            return
-        msg = "**Список отсутствующих:**\n"
-        for user in data.values():
-            msg += f"- {user['name']} до {user['until']} ({user['reason']})\n"
-        await interaction.response.send_message(msg, ephemeral=True)
+    def __init__(self):
+        super().__init__(timeout=60)
+        self.add_item(LanguageSelect())
