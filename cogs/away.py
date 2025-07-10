@@ -8,7 +8,6 @@ class Away(commands.Cog):
 
     @commands.command()
     async def away(self, ctx, until_date, *, reason="No reason provided"):
-        user_id = str(ctx.author.id)
         try:
             datetime.strptime(until_date, "%Y-%m-%d").date()
         except ValueError:
@@ -16,7 +15,7 @@ class Away(commands.Cog):
             return
         
         data = load_data()
-        data[user_id] = {
+        data[str(ctx.author.id)] = {
             "name": ctx.author.name,
             "until": until_date,
             "reason": reason
@@ -35,5 +34,5 @@ class Away(commands.Cog):
             msg += f"- {user['name']} until {user['until']} ({user['reason']})\n"
         await ctx.send(msg)
 
-def setup(bot):
-    bot.add_cog(Away(bot))
+async def setup(bot):
+    await bot.add_cog(Away(bot))
