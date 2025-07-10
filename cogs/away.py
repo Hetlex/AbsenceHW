@@ -1,38 +1,15 @@
 from discord.ext import commands
-from datetime import datetime
-from utils.storage import load_data, save_data
+from views.main_menu import MainMenu
 
 class Away(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def away(self, ctx, until_date, *, reason="No reason provided"):
-        try:
-            datetime.strptime(until_date, "%Y-%m-%d").date()
-        except ValueError:
-            await ctx.send("Invalid date format. Use YYYY-MM-DD.")
-            return
-        
-        data = load_data()
-        data[str(ctx.author.id)] = {
-            "name": ctx.author.name,
-            "until": until_date,
-            "reason": reason
-        }
-        save_data(data)
-        await ctx.send(f"{ctx.author.name} marked as away until {until_date}. Reason: {reason}")
-
-    @commands.command()
-    async def awaylist(self, ctx):
-        data = load_data()
-        if not data:
-            await ctx.send("No one is marked as away.")
-            return
-        msg = "**Away List:**\n"
-        for user in data.values():
-            msg += f"- {user['name']} until {user['until']} ({user['reason']})\n"
-        await ctx.send(msg)
+    async def menu(self, ctx):
+        """Открыть главное меню управления отсутствиями"""
+        view = MainMenu()
+        await ctx.send("Выберите действие:", view=view)
 
 async def setup(bot):
     await bot.add_cog(Away(bot))
