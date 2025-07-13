@@ -1,6 +1,5 @@
 import discord
 from discord import ui, Interaction, SelectOption
-from utils.storage import load_data
 from .away_modal import AwayModal
 
 class LanguageSelect(ui.Select):
@@ -13,7 +12,6 @@ class LanguageSelect(ui.Select):
 
     async def callback(self, interaction: Interaction):
         lang = self.values[0]
-        # Заменяем селект на следующий — выбор типа отсутствия с нужным языком
         view = AbsenceTypeView(lang)
         await interaction.response.edit_message(content="Choose absence type:" if lang == "en" else "Выберите тип отсутствия:", view=view)
 
@@ -22,13 +20,11 @@ class AbsenceTypeSelect(ui.Select):
         self.lang = lang
         options_en = [
             SelectOption(label="Skipping a week", description="Won't reach weekly limit"),
-            SelectOption(label="Skipping 5v5 (1 day)"),
-            SelectOption(label="Skipping 5v5 (2 day`s)"),
+            SelectOption(label="Skipping 1 day 5v5"),
         ]
         options_ru = [
             SelectOption(label="Пропускаю неделю", description="Не смогу набить недельный лимит"),
-            SelectOption(label="Пропускаю 5на5 (1 день)"),
-            SelectOption(label="Пропускаю 5на5 (2 дня)"),
+            SelectOption(label="Пропускаю 1 день 5 на 5"),
         ]
         options = options_en if lang == "en" else options_ru
         super().__init__(placeholder="Select absence type..." if lang == "en" else "Выберите тип отсутствия...", min_values=1, max_values=1, options=options)
