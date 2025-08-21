@@ -1,14 +1,13 @@
 import os
 import asyncio
-from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
-load_dotenv()
-TOKEN = os.getenv("TOKEN")
+# Токен из переменной окружения Railway
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -32,6 +31,7 @@ async def on_error(event_method, *args, **kwargs):
 
 async def setup():
     try:
+        # Загружаем ваши cogs
         await bot.load_extension("cogs.away")
         await bot.load_extension("cogs.scheduler")
         await bot.start(TOKEN)
