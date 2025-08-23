@@ -6,7 +6,6 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-# Токен из переменной окружения Railway
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
