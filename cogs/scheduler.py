@@ -4,7 +4,7 @@ import datetime
 import pytz
 import random
 
-CHANNEL_ID = 1420043327734153227    
+CHANNEL_ID = 1420024438165999697    
 ROLE_ID = 1359579356300578907          
 
 class Scheduler(commands.Cog):
