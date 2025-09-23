@@ -4,8 +4,8 @@ import datetime
 import pytz
 import random
 
-CHANNEL_ID = 1406337377395540158    
-ROLE_ID = 1406337402754174976         
+CHANNEL_ID = 1420024438165999697    
+ROLE_ID = 1359579356300578907         
 
 class Scheduler(commands.Cog):
     def __init__(self, bot):
@@ -20,7 +20,7 @@ class Scheduler(commands.Cog):
     async def check_time(self):
         now = datetime.datetime.now(self.moscow_tz)
 
-        if now.weekday() == 1 and now.hour == 20 and now.minute == 45:
+        if now.weekday() == 5 and now.hour == 22 and now.minute == 00:
             await self.send_reminder()
 
         if now.weekday() == 6 and (now.hour == 5 or now.hour == 22) and now.minute == 0:
