@@ -2,8 +2,9 @@ import discord
 from discord.ext import tasks, commands
 import datetime
 import pytz
+import random
 
-CHANNEL_ID = 1359559397390549254    
+CHANNEL_ID = 1420043327734153227    
 ROLE_ID = 1359579356300578907          
 
 class Scheduler(commands.Cog):
@@ -31,13 +32,18 @@ class Scheduler(commands.Cog):
         if now.weekday() == 0 and now.hour == 5 and now.minute == 0:
             await self.send_reminder()
 
+    import random
+
     async def send_reminder(self):
         channel = self.bot.get_channel(CHANNEL_ID)
         if channel:
             guild = channel.guild
             role = guild.get_role(ROLE_ID)
             if role:
-                await channel.send(f"{role.mention} Don't forget to play 5vs5! You need to reach tier 3!")
+                messages = [
+                    f"{role.mention} Don't forget to play 5vs5! You need to reach tier 3!",
+                    f"{role.mention} Make sure to finish your daily 5vs5 matches please!",
+                    f"{role.mention} Team up with your friends and try to reach tier 3 for the future of our guild!"
+                ]
+                await channel.send(random.choice(messages))
 
-async def setup(bot):
-    await bot.add_cog(Scheduler(bot))
