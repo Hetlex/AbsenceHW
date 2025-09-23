@@ -5,7 +5,7 @@ import pytz
 import random
 
 CHANNEL_ID = 1406337377395540158    
-ROLE_ID = 488261139994509312          
+ROLE_ID = 1406337402754174976         
 
 class Scheduler(commands.Cog):
     def __init__(self, bot):
