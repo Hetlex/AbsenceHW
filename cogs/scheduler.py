@@ -20,7 +20,7 @@ class Scheduler(commands.Cog):
     async def check_time(self):
         now = datetime.datetime.now(self.moscow_tz)
 
-        if now.weekday() == 1 and now.hour == 20 and now.minute == 30:
+        if now.weekday() == 1 and now.hour == 20 and now.minute == 45:
             await self.send_reminder()
 
         if now.weekday() == 6 and (now.hour == 5 or now.hour == 22) and now.minute == 0:
