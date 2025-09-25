@@ -9,15 +9,17 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-CREDS_FILE = "credentials.json"
-SHEET_NAME = "HWGuild"
+creds_json = os.getenv("GOOGLE_CREDS")
+if not creds_json:
+    raise ValueError("❌ Не найдена переменная окружения GOOGLE_CREDS!")
 
 def connect_sheet():
     try:
-        creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPE)
+        creds_dict = json.loads(creds_json)
+        creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPE)
         client = gspread.authorize(creds)
-        sheet = client.open(SHEET_NAME).sheet1
-        print(f"✅ Подключение к Google Sheet '{SHEET_NAME}' прошло успешно!")
+        sheet = client.open("HWGuild").sheet1
+        print(f"✅ Подключение к Google Sheet прошло успешно!")
         return sheet
     except Exception as e:
         print(f"❌ Ошибка при подключении к Google Sheet: {e}")
