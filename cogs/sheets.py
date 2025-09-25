@@ -7,22 +7,16 @@ class SheetCog(commands.Cog):
         self.bot = bot
 
     @commands.command(name="testget")
-    async def all_rows(self, ctx):
-        """Возвращает все строки из Google Sheet"""
+    async def first_row(self, ctx):
+        """Возвращает первую строку из Google Sheet"""
         rows = storage.get_all_rows()
         if not rows:
             await ctx.send("⚠️ Таблица пуста.")
             return
 
-        # Формируем красивый вывод
-        msg = "📄 **Все строки в таблице:**\n"
-        for i, row in enumerate(rows, start=2):  # start=2 чтобы соответствовать индексам sheet
-            msg += f"{i}: {row}\n"
-
-        # Если слишком много строк, разрезаем на несколько сообщений
-        chunk_size = 2000  # ограничение Discord
-        for i in range(0, len(msg), chunk_size):
-            await ctx.send(msg[i:i+chunk_size])
+        first_row = rows[0]  # первая запись
+        msg = f"📄 **Первая строка таблицы:**\n{first_row}"
+        await ctx.send(msg)
 
 # Функция загрузки COG-а
 async def setup(bot):
