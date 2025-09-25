@@ -23,10 +23,7 @@ class Scheduler(commands.Cog):
         if now.weekday() == 5 and now.hour == 22 and now.minute == 00:
             await self.send_reminder()
 
-        if now.weekday() == 6 and (now.hour == 5 or now.hour == 22) and now.minute == 0:
-            await self.send_reminder()
-
-        if now.weekday() == 0 and now.hour == 5 and now.minute == 0:
+        if now.weekday() == 6 and now.hour == 22 and now.minute == 0:
             await self.send_reminder()
 
     async def send_reminder(self):
