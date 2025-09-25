@@ -2,12 +2,26 @@ import json
 import os
 import gspread
 from google.oauth2.service_account import Credentials
+import logging
 
 AWAY_FILE = "away.json"
 SCOPE = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/drive"
 ]
+
+
+logging.basicConfig(level=logging.INFO)
+
+logging.info("=== Переменные окружения, доступные боту ===")
+for key, value in os.environ.items():
+    # Чтобы не выводить длинный токен целиком, можно обрезать его
+    if "TOKEN" in key or "CREDS" in key or "KEY" in key:
+        logging.info(f"{key}=<{len(value)} символов>")
+    else:
+        logging.info(f"{key}={value}")
+logging.info("=== Конец списка ===")
+
 
 creds_json = os.getenv("GOOGLE_CREDS")
 if not creds_json:
