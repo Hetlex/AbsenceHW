@@ -3,3 +3,4 @@ python-dotenv
 pytz
 gspread
 google-auth
+PyNaCl
