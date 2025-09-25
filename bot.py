@@ -2,10 +2,9 @@ import os
 import asyncio
 import discord
 from discord.ext import commands
-import logging
+from dotenv import load_dotenv
 
-logging.basicConfig(level=logging.INFO)
-
+load_dotenv() 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
@@ -33,6 +32,7 @@ async def setup():
         # Загружаем ваши cogs
         await bot.load_extension("cogs.away")
         await bot.load_extension("cogs.scheduler")
+        await bot.load_extension("cogs.sheets")
         await bot.start(TOKEN)
     except Exception as e:
         print(f"Ошибка при запуске бота: {e}")
