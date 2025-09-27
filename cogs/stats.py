@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from utils import storage
 
-class SheetCog(commands.Cog):
+class StatsCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
