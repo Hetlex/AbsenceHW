@@ -31,5 +31,5 @@ class StatsCog(commands.Cog):
 
 # вот это важно!
 async def setup(bot):
-    await bot.add_cog(SheetCog(bot))
+    await bot.add_cog(StatsCog(bot))
 
