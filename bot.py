@@ -36,6 +36,7 @@ async def setup():
         await bot.load_extension("cogs.away")
         await bot.load_extension("cogs.scheduler")
         await bot.load_extension("cogs.sheets")
+        await bot.load_extension("cogs.stats")
         await bot.start(TOKEN)
     except Exception as e:
         print(f"Ошибка при запуске бота: {e}")
