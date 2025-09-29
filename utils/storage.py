@@ -4,6 +4,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 AWAY_FILE = "away.json"
+SUGGEST_FILE = "suggests.json"
 SCOPE = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/drive"
@@ -89,3 +90,17 @@ def get_user_stats_all(discord_user):
                 result[sheet.title] = (nickname, stats)
                 break
     return result
+
+#Саджесты тут
+
+if not os.path.exists(SUGGEST_FILE):
+    with open(SUGGEST_FILE, "w", encoding="utf-8") as f:
+        json.dump([], f)
+
+def load_suggests():
+    with open(SUGGEST_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_suggests(suggests):
+    with open(SUGGEST_FILE, "w", encoding="utf-8") as f:
+        json.dump(suggests, f, ensure_ascii=False, indent=2)
