@@ -5,7 +5,9 @@ import pytz
 import random
 
 CHANNEL_ID = 1420024438165999697    
-ROLE_ID = 1359579356300578907         
+ROLE_ID = 135957935630057890
+TIER2_ID = 1423056349222146108
+TIER2_CHANNEL = 1423057474440663161         
 
 class Scheduler(commands.Cog):
     def __init__(self, bot):
@@ -20,11 +22,13 @@ class Scheduler(commands.Cog):
     async def check_time(self):
         now = datetime.datetime.now(self.moscow_tz)
 
-        if now.weekday() == 5 and now.hour == 22 and now.minute == 00:
+        if now.weekday() == 5 and now.hour == 1 and now.minute == 5:
             await self.send_reminder()
+            await self.tier2_reminder()
 
         if now.weekday() == 6 and now.hour == 22 and now.minute == 0:
             await self.send_reminder()
+            await self.tier2_reminder()
 
     async def send_reminder(self):
         channel = self.bot.get_channel(CHANNEL_ID)
@@ -33,9 +37,22 @@ class Scheduler(commands.Cog):
             role = guild.get_role(ROLE_ID)
             if role:
                 messages = [
-                    f"{role.mention} Don't forget to play 5vs5! You need to reach tier 3!",
+                    f"{role.mention} Don't forget to play 5vs5!",
                     f"{role.mention} Make sure to finish your daily 5vs5 matches please!",
-                    f"{role.mention} Team up with your friends and try to reach tier 3 for the future of our guild!"
+                    f"{role.mention} Team up with your friends and play 5vs5 for the future of our guild!"
+                ]
+                await channel.send(random.choice(messages))
+    
+    async def tier2_reminder(self):
+        channel = self.bot.get_channel(TIER2_CHANNEL)
+        if channel:
+            guild = channel.guild
+            role = guild.get_role(TIER2_ID)
+            if role:
+                messages = [
+                    f"{role.mention} Time to get tier 3 in 5vs5!",
+                    f"{role.mention} 5vs5 time, can you reach tier 3 today?",
+                    f"{role.mention} 5vs5, the road to tier 3 is open!"
                 ]
                 await channel.send(random.choice(messages))
 
