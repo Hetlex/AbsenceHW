@@ -11,12 +11,14 @@ Clone the repository
    cd repo
 
 Install dependencies:
+```bash
 pip install -r requirements.txt
-
+```
 Create your .env file and add this:
-
+```bash
 DISCORD_TOKEN=your_discord_bot_token
-
-Run the bot: 
+```
+Run the bot:
+```bash 
 python bot.py
-
+```
