@@ -7,9 +7,10 @@ Discord bot for Hui Wam guild — absence tracking and PvP organization.
 - 5vs5 notification;
 # Installation
 Clone the repository
+```bash
    git clone https://github.com/Hetlex/AbsenceHW
    cd repo
-
+```
 Install dependencies:
 ```bash
 pip install -r requirements.txt
