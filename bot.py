@@ -3,9 +3,11 @@ import asyncio
 import discord
 from discord.ext import commands
 import logging
+from dotenv import load_dotenv
 
+load_dotenv()
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 if not TOKEN:
@@ -39,6 +41,7 @@ async def setup():
         await bot.load_extension("cogs.stats")
         await bot.load_extension("cogs.suggests")
         await bot.load_extension("cogs.help")
+        await bot.load_extension("cogs.congrats")
         await bot.start(TOKEN)
     except Exception as e:
         print(f"Ошибка при запуске бота: {e}")

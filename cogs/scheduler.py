@@ -13,49 +13,37 @@ class Scheduler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.moscow_tz = pytz.timezone("Europe/Moscow")
-        self.check_time.start()
+        self.check_time.start()  # запускаем цикл
 
     def cog_unload(self):
         self.check_time.cancel()
 
     @tasks.loop(minutes=1)
     async def check_time(self):
+        await self.bot.wait_until_ready()  # ждём, пока бот полностью подключится
         now = datetime.datetime.now(self.moscow_tz)
 
-        if now.weekday() == 5 and now.hour == 22 and now.minute == 0:
-            await self.send_reminder()
-            await self.tier2_reminder()
+        if now.weekday() in (5, 6) and now.hour == 22 and now.minute == 0:
+            await self.send_reminder(CHANNEL_ID, ROLE_ID)
+            await self.send_reminder(TIER2_CHANNEL, TIER2_ID)
 
-        if now.weekday() == 6 and now.hour == 22 and now.minute == 0:
-            await self.send_reminder()
-            await self.tier2_reminder()
+    async def send_reminder(self, channel_id, role_id):
+        channel = self.bot.get_channel(channel_id)
+        if not channel:
+            print(f"⚠️ Канал с ID {channel_id} не найден")
+            return
+        guild = channel.guild
+        role = guild.get_role(role_id)
+        if not role:
+            print(f"⚠️ Роль с ID {role_id} не найдена")
+            return
 
-    async def send_reminder(self):
-        channel = self.bot.get_channel(CHANNEL_ID)
-        if channel:
-            guild = channel.guild
-            role = guild.get_role(ROLE_ID)
-            if role:
-                messages = [
-                    f"{role.mention} Don't forget to play 5vs5!",
-                    f"{role.mention} Make sure to finish your daily 5vs5 matches please!",
-                    f"{role.mention} Team up with your friends and play 5vs5 for the future of our guild!"
-                ]
-                await channel.send(random.choice(messages))
-    
-    async def tier2_reminder(self):
-        channel = self.bot.get_channel(TIER2_CHANNEL)
-        if channel:
-            guild = channel.guild
-            role = guild.get_role(TIER2_ID)
-            if role:
-                messages = [
-                    f"{role.mention} Time to get tier 3 in 5vs5!",
-                    f"{role.mention} 5vs5 time, can you reach tier 3 today?",
-                    f"{role.mention} 5vs5, the road to tier 3 is open!"
-                ]
-                await channel.send(random.choice(messages))
+        messages = [
+            f"{role.mention} Don't forget to play 5vs5!",
+            f"{role.mention} Make sure to finish your daily 5vs5 matches please!",
+            f"{role.mention} Team up with your friends and play 5vs5 for the future of our guild!"
+        ]
+        await channel.send(random.choice(messages))
 
 async def setup(bot):
     await bot.add_cog(Scheduler(bot))
-
