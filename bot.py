@@ -37,7 +37,7 @@ async def setup():
     try:
         # Загружаем ваши cogs
         await bot.load_extension("cogs.away")
-        await bot.load_extension("cogs.scheduler")
+        await bot.load_extension("cogs.change")
         await bot.load_extension("cogs.stats")
         await bot.load_extension("cogs.suggests")
         await bot.load_extension("cogs.help")
