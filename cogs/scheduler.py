@@ -5,9 +5,7 @@ import pytz
 import random
 
 CHANNEL_ID = 1420024438165999697    
-ROLE_ID = 135957935630057890
-TIER2_ID = 1423056349222146108
-TIER2_CHANNEL = 1423057474440663161         
+ROLE_ID = 135957935630057890         
 
 class Scheduler(commands.Cog):
     def __init__(self, bot):
@@ -25,7 +23,6 @@ class Scheduler(commands.Cog):
 
         if now.weekday() in (5, 6) and now.hour == 22 and now.minute == 0:
             await self.send_reminder(CHANNEL_ID, ROLE_ID)
-            await self.send_reminder(TIER2_CHANNEL, TIER2_ID)
 
     async def send_reminder(self, channel_id, role_id):
         channel = self.bot.get_channel(channel_id)
